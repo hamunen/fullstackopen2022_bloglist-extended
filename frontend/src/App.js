@@ -8,10 +8,14 @@ import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState(null)
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -27,8 +31,7 @@ const App = () => {
   }, [])
 
   const updateMessage = (text, error = false) => {
-    setMessage({ text, error })
-    setTimeout(() => setMessage(null), 5000)
+    dispatch(setNotification({ text, error }))
   }
 
   const handleLogin = async (loginUser) => {
@@ -98,7 +101,7 @@ const App = () => {
   const loginForm = () => (
     <div>
       <h2>Log in to application</h2>
-      <Notification notification={message} />
+      <Notification />
       <LoginForm handleLogin={handleLogin} />
     </div>
   )
@@ -107,7 +110,7 @@ const App = () => {
   const blogForm = () => (
     <div>
       <h2>blogs</h2>
-      <Notification notification={message} />
+      <Notification />
       <p>
         {user.name} is logged in <button onClick={handleLogout}>logout</button>
       </p>
