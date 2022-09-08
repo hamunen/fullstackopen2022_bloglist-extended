@@ -9,18 +9,32 @@ const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
-    marginBottom: 5
+    marginBottom: 5,
   }
 
   const deleteButton = () => {
     if (blog.user.username === currentUser)
-      return <div><button data-test-id='removeBtn' onClick={() => handleDelete(blog.id)}>remove</button> </div>
+      return (
+        <div>
+          <button
+            data-test-id='removeBtn'
+            onClick={() => handleDelete(blog.id)}
+          >
+            remove
+          </button>{' '}
+        </div>
+      )
   }
 
   const blogDetails = () => (
     <div>
       <div>{blog.url}</div>
-      <div>likes: {blog.likes} <button data-test-id='likeBtn' onClick={() => handleLike(blog.id)}>like</button> </div>
+      <div>
+        likes: {blog.likes}{' '}
+        <button data-test-id='likeBtn' onClick={() => handleLike(blog.id)}>
+          like
+        </button>{' '}
+      </div>
       <div>{blog.user.name}</div>
       {deleteButton()}
     </div>
@@ -29,7 +43,9 @@ const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
   return (
     <div style={blogStyle} className='blog'>
       {blog.title} {blog.author} &nbsp;
-      <button onClick={() => setViewDetails(!viewDetails)}>{viewDetails ? 'hide' : 'view'}</button>
+      <button onClick={() => setViewDetails(!viewDetails)}>
+        {viewDetails ? 'hide' : 'view'}
+      </button>
       {viewDetails && blogDetails()}
     </div>
   )

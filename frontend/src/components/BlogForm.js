@@ -10,7 +10,7 @@ const BlogForm = ({ createBlog }) => {
     createBlog({
       title: newTitle,
       author: newAuthor,
-      url: newUrl
+      url: newUrl,
     })
 
     setNewTitle('')
@@ -24,15 +24,32 @@ const BlogForm = ({ createBlog }) => {
       <form onSubmit={addNote}>
         <div>
           <label htmlFor='titleInput'>title: </label>
-          <input id='titleInput' value={newTitle} onChange={({ target }) => setNewTitle(target.value)} /></div>
+          <input
+            id='titleInput'
+            value={newTitle}
+            onChange={({ target }) => setNewTitle(target.value)}
+          />
+        </div>
         <div>
           <label htmlFor='authorInput'>author: </label>
-          <input id='authorInput' value={newAuthor} onChange={({ target }) => setNewAuthor(target.value)} /></div>
+          <input
+            id='authorInput'
+            value={newAuthor}
+            onChange={({ target }) => setNewAuthor(target.value)}
+          />
+        </div>
         <div>
           <label htmlFor='urlInput'>url: </label>
-          <input id='urlInput' value={newUrl} onChange={({ target }) => setNewUrl(target.value)} /></div>
+          <input
+            id='urlInput'
+            value={newUrl}
+            onChange={({ target }) => setNewUrl(target.value)}
+          />
+        </div>
 
-        <button id="create-blog-button" type="submit">create</button>
+        <button id='create-blog-button' type='submit'>
+          create
+        </button>
       </form>
     </div>
   )

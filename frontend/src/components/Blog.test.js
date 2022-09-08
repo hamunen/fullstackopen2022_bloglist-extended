@@ -10,12 +10,17 @@ describe('<Blog />', () => {
     author: 'somebody',
     url: 'somewhere.com',
     likes: 89,
-    user: { name: 'Test User' }
+    user: { name: 'Test User' },
   }
 
   test('renders content', () => {
     const view = render(
-      <Blog blog={blog} handleLike={jest.fn()} handleDelete={jest.fn()} currentUser='x'/>
+      <Blog
+        blog={blog}
+        handleLike={jest.fn()}
+        handleDelete={jest.fn()}
+        currentUser='x'
+      />
     )
 
     //view.debug()
@@ -27,12 +32,16 @@ describe('<Blog />', () => {
     expect(view.container).not.toHaveTextContent(blog.url)
     expect(view.container).not.toHaveTextContent(blog.likes)
     expect(view.container).not.toHaveTextContent(blog.user.name)
-
   })
 
   test('clicking view shows details and hide hides them', () => {
     const view = render(
-      <Blog blog={blog} handleLike={jest.fn()} handleDelete={jest.fn()} currentUser='x'/>
+      <Blog
+        blog={blog}
+        handleLike={jest.fn()}
+        handleDelete={jest.fn()}
+        currentUser='x'
+      />
     )
 
     // click view
@@ -60,7 +69,12 @@ describe('<Blog />', () => {
     const mockHandler = jest.fn()
 
     render(
-      <Blog blog={blog} handleLike={mockHandler} handleDelete={jest.fn()} currentUser='x'/>
+      <Blog
+        blog={blog}
+        handleLike={mockHandler}
+        handleDelete={jest.fn()}
+        currentUser='x'
+      />
     )
 
     const viewButton = screen.getByText('view')
@@ -72,5 +86,4 @@ describe('<Blog />', () => {
 
     expect(mockHandler.mock.calls).toHaveLength(2)
   })
-
 })

@@ -5,13 +5,10 @@ import BlogForm from './BlogForm'
 //import { prettyDOM } from '@testing-library/dom'
 
 describe('<BlogForm />', () => {
-
   test('calls the event hndler with right details', () => {
     const createBlog = jest.fn()
 
-    render(
-      <BlogForm createBlog={createBlog} />
-    )
+    render(<BlogForm createBlog={createBlog} />)
 
     const titleInput = screen.getByLabelText('title', { exact: false })
     const authorInput = screen.getByLabelText('author', { exact: false })
@@ -32,5 +29,4 @@ describe('<BlogForm />', () => {
     expect(createBlog.mock.calls[0][0].author).toBe('New author')
     expect(createBlog.mock.calls[0][0].url).toBe('newurl.com')
   })
-
 })

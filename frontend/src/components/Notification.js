@@ -8,7 +8,7 @@ const Notification = ({ notification }) => {
     borderStyle: 'solid',
     borderRadius: 5,
     padding: 10,
-    marginBottom: 10
+    marginBottom: 10,
   }
 
   const errorStyle = {
@@ -18,14 +18,18 @@ const Notification = ({ notification }) => {
     borderStyle: 'solid',
     borderRadius: 5,
     padding: 10,
-    marginBottom: 10
+    marginBottom: 10,
   }
 
   if (notification === null) return null
   const style = notification.error ? errorStyle : successStyle
   const messageClass = notification.error ? 'error' : 'message'
 
-  return <div style={style} className={messageClass}>{notification.text}</div>
+  return (
+    <div style={style} className={messageClass}>
+      {notification.text}
+    </div>
+  )
 }
 
 export default Notification
