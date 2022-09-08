@@ -17,7 +17,7 @@ router.post('/', async (request, response) => {
   }
 
   const user = request.user
-  const blog = new Blog({ ...request.body, user: user.id })
+  const blog = new Blog({ ...request.body, likes: 0, user: user.id })
 
   const savedBlog = await blog.save()
 
@@ -50,7 +50,12 @@ router.delete('/:id', async (request, response) => {
 })
 
 router.put('/:id', async (request, response) => {
-  const blog = request.body
+  const blog = {
+    url: request.body.url,
+    author: request.body.author,
+    title: request.body.title,
+    likes: request.body.likes,
+  }
 
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
     new: true,
