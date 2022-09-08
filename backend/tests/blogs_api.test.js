@@ -20,7 +20,7 @@ describe('when there are some blogs in database', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-      expect(response.body).toHaveLength(helper.initialBlogs.length)
+    expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
 
   test('those are identified by field id', async () => {
@@ -29,37 +29,32 @@ describe('when there are some blogs in database', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-      expect(response.body[0].id).toBeDefined()
+    expect(response.body[0].id).toBeDefined()
   })
 
   test('a blog can be deleted', async () => {
     const aBlogAtStart = (await helper.blogsInDb())[0]
 
-    await api
-      .delete(`/api/blogs/${aBlogAtStart.id}`)
-      .expect(204)
+    await api.delete(`/api/blogs/${aBlogAtStart.id}`).expect(204)
 
-      const blogsAtEnd = await helper.blogsInDb()
-      expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
 
-      const titles = blogsAtEnd.map(b => b.title)
-      expect(titles).not.toContain(aBlogAtStart.title)
+    const titles = blogsAtEnd.map((b) => b.title)
+    expect(titles).not.toContain(aBlogAtStart.title)
   })
 
   test('a blog can be edited', async () => {
     const aBlogAtStart = (await helper.blogsInDb())[0]
     const editedBlog = {
       ...aBlogAtStart,
-      likes: 99
+      likes: 99,
     }
 
-    await api
-      .put(`/api/blogs/${aBlogAtStart.id}`)
-      .send(editedBlog)
-      .expect(200)
+    await api.put(`/api/blogs/${aBlogAtStart.id}`).send(editedBlog).expect(200)
 
     const blogsAtEnd = await helper.blogsInDb()
-    const aBlogAtEnd = blogsAtEnd.find(b => b.id === aBlogAtStart.id)
+    const aBlogAtEnd = blogsAtEnd.find((b) => b.id === aBlogAtStart.id)
     expect(aBlogAtEnd.likes).toBe(99)
   })
 
@@ -67,15 +62,15 @@ describe('when there are some blogs in database', () => {
     let token
     beforeEach(async () => {
       await User.deleteMany({})
-  
+
       const passwordHash = await bcrypt.hash('sekret', 10)
       const user = new User({ username: 'root', passwordHash })
-  
+
       await user.save()
 
       const response = await api
-      .post('/api/login')
-      .send({ username: 'root', password: 'sekret' })
+        .post('/api/login')
+        .send({ username: 'root', password: 'sekret' })
 
       token = response.body.token
     })
@@ -85,38 +80,38 @@ describe('when there are some blogs in database', () => {
         title: 'Benefits of Scrumban',
         author: 'Kalle Ilves',
         url: 'www.google.com',
-        likes: 7
+        likes: 7,
       }
-    
+
       await api
         .post('/api/blogs')
         .send(newBlog)
         .set('Authorization', `bearer ${token}`)
         .expect(201)
         .expect('Content-Type', /application\/json/)
-    
-        const blogsAtEnd = await helper.blogsInDb()
-        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
-        const titles = blogsAtEnd.map(b => b.title)
-        expect(titles).toContain('Benefits of Scrumban')
+      const blogsAtEnd = await helper.blogsInDb()
+      expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+      const titles = blogsAtEnd.map((b) => b.title)
+      expect(titles).toContain('Benefits of Scrumban')
     })
 
     test('fails if title and url missing', async () => {
       const newBlog = {
         author: 'Kalle Ilves',
-        likes: 7
+        likes: 7,
       }
-    
+
       await api
         .post('/api/blogs')
         .send(newBlog)
         .set('Authorization', `bearer ${token}`)
         .expect(400)
         .expect('Content-Type', /application\/json/)
-    
-        const blogsAtEnd = await helper.blogsInDb()
-        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+
+      const blogsAtEnd = await helper.blogsInDb()
+      expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
     })
   })
 })
@@ -134,9 +129,9 @@ describe('user creation', () => {
   test('fails if username is too short', async () => {
     const newUser = {
       username: 'mo',
-      pasword: 'sekred'
+      pasword: 'sekred',
     }
-  
+
     await api
       .post('/api/users')
       .send(newUser)
@@ -147,9 +142,9 @@ describe('user creation', () => {
   test('fails if password is too short', async () => {
     const newUser = {
       username: 'kalle',
-      pasword: 'p'
+      pasword: 'p',
     }
-  
+
     await api
       .post('/api/users')
       .send(newUser)
