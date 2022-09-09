@@ -4,11 +4,20 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 
 router.get('/', async (request, response) => {
-  const notes = await Blog.find({})
+  const blogs = await Blog.find({})
     .find({})
     .populate('user', { username: 1, name: 1 })
 
-  response.json(notes)
+  response.json(blogs)
+})
+
+router.get('/:id', async (request, response) => {
+  const blog = await Blog.findById(request.params.id).populate('user', {
+    username: 1,
+    name: 1,
+  })
+
+  response.json(blog)
 })
 
 router.post('/', async (request, response) => {

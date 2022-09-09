@@ -1,4 +1,5 @@
 import axios from 'axios'
+//import { get } from 'immer/dist/internal'
 const baseUrl = '/api/blogs'
 
 let token = null
@@ -12,6 +13,11 @@ const getAll = () => {
   return request.then((response) => response.data)
 }
 
+const get = (id) => {
+  const request = axios.get(`${baseUrl}/${id}`)
+  return request.then((response) => response.data)
+}
+
 const create = async (newObject) => {
   const config = {
     headers: { Authorization: token },
@@ -21,12 +27,18 @@ const create = async (newObject) => {
   return response.data
 }
 
-const update = async (blog) => {
+const like = async (id) => {
   const config = {
     headers: { Authorization: token },
   }
 
-  const response = await axios.put(`${baseUrl}/${blog.id}`, blog, config)
+  const blogToLike = await get(id)
+
+  const response = await axios.put(
+    `${baseUrl}/${id}`,
+    { ...blogToLike, likes: blogToLike.likes + 1 },
+    config
+  )
   return response.data
 }
 
@@ -38,5 +50,5 @@ const remove = async (id) => {
   await axios.delete(`${baseUrl}/${id}`, config)
 }
 
-const blogService = { setToken, getAll, create, update, remove }
+const blogService = { setToken, getAll, create, like, remove }
 export default blogService

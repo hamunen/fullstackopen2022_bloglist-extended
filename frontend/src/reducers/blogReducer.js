@@ -14,11 +14,9 @@ const blogSlice = createSlice({
       }
       return state.map((a) => (a.id !== id ? a : changedblog))
     },
-    updateAnecdote(state, action) {
-      const updatedAnecdote = action.payload
-      return state.map((a) =>
-        a.id !== updatedAnecdote.id ? a : updatedAnecdote
-      )
+    updateBlog(state, action) {
+      const updatedBlog = action.payload
+      return state.map((a) => (a.id !== updatedBlog.id ? a : updatedBlog))
     },
     appendBlog(state, action) {
       state.push(action.payload)
@@ -26,16 +24,36 @@ const blogSlice = createSlice({
     setBlogs(state, action) {
       return action.payload
     },
+    removeBlog(state, action) {
+      const removedId = action.payload
+      return state.filter((b) => b.id !== removedId)
+    },
   },
 })
 
-export const { setBlogs, appendBlog } = blogSlice.actions
+export const { setBlogs, appendBlog, updateBlog, removeBlog } =
+  blogSlice.actions
 
 export const createBlog = (content) => {
   return async (dispatch) => {
     const newBlog = await blogService.create(content)
     dispatch(appendBlog(newBlog))
     return newBlog
+  }
+}
+
+export const likeBlog = (id) => {
+  return async (dispatch) => {
+    //äh, pitäiskö like logiikka olla tässä vai servicessä?? anekdooteissa on servicessä
+    const likedBlog = await blogService.like(id)
+    dispatch(updateBlog(likedBlog))
+  }
+}
+
+export const deleteBlog = (id) => {
+  return async (dispatch) => {
+    await blogService.remove(id)
+    dispatch(removeBlog(id))
   }
 }
 

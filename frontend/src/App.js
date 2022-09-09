@@ -10,7 +10,12 @@ import loginService from './services/login'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
-import { initializeBlogs, createBlog } from './reducers/blogReducer'
+import {
+  initializeBlogs,
+  createBlog,
+  likeBlog,
+  deleteBlog,
+} from './reducers/blogReducer'
 
 const App = () => {
   //const [blogsOld, setBlogs] = useState([])
@@ -61,8 +66,6 @@ const App = () => {
 
     try {
       dispatch(createBlog(blog))
-      //const returnedBlog = await blogService.create(blog)
-      //setBlogs(blogs.concat(returnedBlog))
       updateMessage(`New blog "${blog.title}" added!`)
     } catch (error) {
       updateMessage(error.response.data.error, true)
@@ -70,12 +73,8 @@ const App = () => {
   }
 
   const handleLike = async (id) => {
-    const blog = blogs.find((b) => b.id === id)
-    const likedBlog = { ...blog, likes: blog.likes + 1 }
-
     try {
-      const returnedBlog = await blogService.update(likedBlog)
-      setBlogs(blogs.map((b) => (b.id !== id ? b : returnedBlog)))
+      dispatch(likeBlog(id))
     } catch (error) {
       updateMessage(error.response.data.error, true)
     }
@@ -93,8 +92,7 @@ const App = () => {
         return
       }
 
-      await blogService.remove(id)
-      setBlogs(blogs.filter((b) => b.id !== id))
+      dispatch(deleteBlog(id))
       updateMessage(`blog ${blogToDelete.title} deleted!`)
     } catch (error) {
       updateMessage(error.response.data.error, true)
