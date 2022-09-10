@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 
-import blogService from './services/blogs'
-import loginService from './services/login'
+//import blogService from './services/blogs'
+//import loginService from './services/login'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
@@ -16,49 +16,28 @@ import {
   likeBlog,
   deleteBlog,
 } from './reducers/blogReducer'
+import { initializeUser, logoutUser } from './reducers/userReducer'
 
 const App = () => {
   //const [blogsOld, setBlogs] = useState([])
-  const [user, setUser] = useState(null)
+  //const [user, setUser] = useState(null)
 
   const blogs = useSelector((state) => state.blogs)
+  const user = useSelector((state) => state.user)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUser())
   }, [dispatch])
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, [])
-
   const updateMessage = (text, error = false) => {
-    dispatch(setNotification({ text, error }))
-  }
-
-  const handleLogin = async (loginUser) => {
-    try {
-      const user = await loginService.login(loginUser)
-
-      window.localStorage.setItem('loggedBloglistUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
-      updateMessage(`Logged in. Hello ${user.name}!`)
-    } catch (exception) {
-      console.log(exception)
-      updateMessage('Invalid username or password', true)
-    }
+    dispatch(setNotification(text, error))
   }
 
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedBloglistUser')
-    setUser(null)
-    updateMessage('Logged out. Bye )')
+    dispatch(logoutUser())
+    updateMessage('Logged out. Bye!')
   }
 
   const addBlog = async (blog) => {
@@ -103,7 +82,7 @@ const App = () => {
     <div>
       <h2>Log in to application</h2>
       <Notification />
-      <LoginForm handleLogin={handleLogin} />
+      <LoginForm />
     </div>
   )
 

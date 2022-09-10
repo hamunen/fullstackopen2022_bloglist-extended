@@ -1,10 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = null
-
 const notificationSlice = createSlice({
   name: 'notification',
-  initialState,
+  initialState: null,
   reducers: {
     updateNotification(state, action) {
       return action.payload
@@ -14,7 +12,7 @@ const notificationSlice = createSlice({
 
 export const { updateNotification } = notificationSlice.actions
 
-export const setNotification = ({ text, error = false }) => {
+export const setNotification = (text, error = false) => {
   return async (dispatch, getState) => {
     /* if existing notification, clear the timeout */
     const existingNotification = getState().notification
