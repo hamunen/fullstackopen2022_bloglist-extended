@@ -45,6 +45,7 @@ export const logoutUser = () => {
   return async (dispatch) => {
     window.localStorage.removeItem('loggedBloglistUser')
     dispatch(setUser(null))
+    dispatch(setNotification('Logged out. Bye!'))
   }
 }
 

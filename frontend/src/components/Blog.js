@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
+import { likeBlog, deleteBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
+const Blog = ({ blog, currentUser }) => {
   const [viewDetails, setViewDetails] = useState(false)
+  const dispatch = useDispatch()
 
   const blogStyle = {
     paddingTop: 10,
@@ -10,6 +13,16 @@ const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
+  }
+
+  const handleDelete = async () => {
+    if (
+      window.confirm(
+        `Do you REALLY want to remove blog ${blog.title} from the wonderful ${blog.author}?? Sure?`
+      )
+    ) {
+      dispatch(deleteBlog(blog))
+    }
   }
 
   const deleteButton = () => {
@@ -31,7 +44,10 @@ const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
       <div>{blog.url}</div>
       <div>
         likes: {blog.likes}{' '}
-        <button data-test-id='likeBtn' onClick={() => handleLike(blog.id)}>
+        <button
+          data-test-id='likeBtn'
+          onClick={() => dispatch(likeBlog(blog.id))}
+        >
           like
         </button>{' '}
       </div>
@@ -53,8 +69,6 @@ const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  handleLike: PropTypes.func.isRequired,
-  handleDelete: PropTypes.func.isRequired,
   currentUser: PropTypes.string.isRequired,
 }
 

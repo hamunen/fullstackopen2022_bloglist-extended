@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import blogService from '../services/blogs'
+import { setNotification } from './notificationReducer'
 
 const blogSlice = createSlice({
   name: 'blogs',
@@ -36,24 +37,39 @@ export const { setBlogs, appendBlog, updateBlog, removeBlog } =
 
 export const createBlog = (content) => {
   return async (dispatch) => {
-    const newBlog = await blogService.create(content)
-    dispatch(appendBlog(newBlog))
-    return newBlog
+    try {
+      const newBlog = await blogService.create(content)
+      dispatch(appendBlog(newBlog))
+      dispatch(setNotification(`New blog "${newBlog.title}" added!`))
+      return newBlog
+    } catch (error) {
+      console.log(error)
+      dispatch(setNotification(error.response.data.error, true))
+    }
   }
 }
 
 export const likeBlog = (id) => {
   return async (dispatch) => {
     //äh, pitäiskö like logiikka olla tässä vai servicessä?? anekdooteissa on servicessä
-    const likedBlog = await blogService.like(id)
-    dispatch(updateBlog(likedBlog))
+    try {
+      const likedBlog = await blogService.like(id)
+      dispatch(updateBlog(likedBlog))
+    } catch (error) {
+      dispatch(setNotification(error.response.data.error, true))
+    }
   }
 }
 
-export const deleteBlog = (id) => {
+export const deleteBlog = (blogToDelete) => {
   return async (dispatch) => {
-    await blogService.remove(id)
-    dispatch(removeBlog(id))
+    try {
+      await blogService.remove(blogToDelete.id)
+      dispatch(removeBlog(blogToDelete.id))
+      dispatch(setNotification(`blog ${blogToDelete.title} deleted!`))
+    } catch (error) {
+      dispatch(setNotification(error.response.data.error, true))
+    }
   }
 }
 
