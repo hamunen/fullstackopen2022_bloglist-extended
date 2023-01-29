@@ -5,11 +5,13 @@ import { Routes, Route, Link, useMatch } from 'react-router-dom'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
+
 import {
   initializeUser,
   logoutUser,
   initializeUsers,
 } from './reducers/userReducer'
+
 import BlogList from './components/BlogList'
 import Users from './components/Users'
 import User from './components/User'
