@@ -1,19 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit'
 import blogService from '../services/blogs'
 import loginService from '../services/login'
+import userService from '../services/users'
 import { setNotification } from './notificationReducer'
 
 const userSlice = createSlice({
   name: 'user',
-  initialState: null,
+  initialState: { currentUser: null, users: [] },
   reducers: {
     setUser(state, action) {
-      return action.payload
+      return { ...state, currentUser: action.payload }
+    },
+    setUsers(state, action) {
+      return { ...state, users: action.payload }
     },
   },
 })
 
-export const { setUser } = userSlice.actions
+export const { setUser, setUsers } = userSlice.actions
 
 export const initializeUser = () => {
   return async (dispatch) => {
@@ -23,6 +27,13 @@ export const initializeUser = () => {
       dispatch(setUser(user))
       blogService.setToken(user.token)
     }
+  }
+}
+
+export const initializeUsers = () => {
+  return async (dispatch) => {
+    const users = await userService.getAll()
+    dispatch(setUsers(users))
   }
 }
 
