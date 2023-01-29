@@ -4,10 +4,12 @@ import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
+import { Routes, Route, Link } from 'react-router-dom'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs, createBlog } from './reducers/blogReducer'
 import { initializeUser, logoutUser } from './reducers/userReducer'
+import BlogList from './components/BlogList'
 
 const App = () => {
   const blogs = useSelector((state) => state.blogs)
@@ -36,7 +38,6 @@ const App = () => {
   const blogForm = () => (
     <div>
       <h2>blogs</h2>
-      <Notification />
       <p>
         {user.name} is logged in{' '}
         <button onClick={() => dispatch(logoutUser())}>logout</button>
@@ -47,24 +48,15 @@ const App = () => {
     </div>
   )
 
-  const blogList = () => {
-    const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
-    return (
-      <div>
-        {sortedBlogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} currentUser={user.username} />
-        ))}
-      </div>
-    )
-  }
-
   return user === null ? (
     loginForm()
   ) : (
     <div>
       {blogForm()}
       <br />
-      {blogList()}
+      <Routes>
+        <Route path='/' element={<BlogList currentUser={user.username} />} />
+      </Routes>
     </div>
   )
 }
