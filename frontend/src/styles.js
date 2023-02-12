@@ -4,10 +4,15 @@ import { Link } from 'react-router-dom'
 export const Page = styled.div`
   padding: 1em;
   font-family: 'roboto';
+  background: lightyellow;
+`
+
+export const NavbarDivider = styled.hr`
+  border: 2px solid brown;
 `
 
 export const Navigation = styled.div`
-  background: BurlyWood;
+  //background: BurlyWood;
   display: inline;
   padding: 1em;
 

@@ -5,7 +5,7 @@ import { Routes, Route, useMatch, Link } from 'react-router-dom'
 import Blog from './components/Blog'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
-import { Page, Navigation } from './styles'
+import { Page, Navigation, NavbarDivider } from './styles'
 
 import {
   initializeUser,
@@ -49,17 +49,20 @@ const App = () => {
   )
 
   const navBar = () => (
-    <Navigation>
-      <h2>THE BLOG APP</h2>
-      <Link to='/'>blogs</Link>
-      <Link to='/users'>users</Link>
-      {currentUser != null && (
-        <span>
-          {currentUser.name} logged in{' '}
-          <button onClick={() => dispatch(logoutUser())}>logout</button>
-        </span>
-      )}
-    </Navigation>
+    <>
+      <Navigation>
+        <h2>THE BLOG APP</h2>
+        <Link to='/'>blogs</Link>
+        <Link to='/users'>users</Link>
+        {currentUser != null && (
+          <span>
+            {currentUser.name} logged in{' '}
+            <button onClick={() => dispatch(logoutUser())}>logout</button>
+          </span>
+        )}
+      </Navigation>
+      <NavbarDivider />
+    </>
   )
 
   return (
