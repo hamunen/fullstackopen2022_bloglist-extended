@@ -1,19 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
-import PropTypes from 'prop-types'
 import { likeBlog, deleteBlog } from '../reducers/blogReducer'
+import { useNavigate } from 'react-router-dom'
 
 const Blog = ({ blog, currentUser }) => {
-  const [viewDetails, setViewDetails] = useState(false)
   const dispatch = useDispatch()
-
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
+  const navigate = useNavigate()
 
   const handleDelete = async () => {
     if (
@@ -22,11 +14,12 @@ const Blog = ({ blog, currentUser }) => {
       )
     ) {
       dispatch(deleteBlog(blog))
+      navigate('/')
     }
   }
 
   const deleteButton = () => {
-    if (blog.user.username === currentUser)
+    if (blog.user.username === currentUser.username)
       return (
         <div>
           <button
@@ -39,37 +32,31 @@ const Blog = ({ blog, currentUser }) => {
       )
   }
 
-  const blogDetails = () => (
+  if (!blog) {
+    return null
+  }
+
+  return (
     <div>
-      <div>{blog.url}</div>
+      <h1>
+        {blog.title} - by {blog.author}
+      </h1>
       <div>
-        likes: {blog.likes}{' '}
+        <a href={blog.url}>{blog.url}</a>
+      </div>
+      <div>
+        {blog.likes} likes{' '}
         <button
           data-test-id='likeBtn'
           onClick={() => dispatch(likeBlog(blog.id))}
         >
           like
-        </button>{' '}
+        </button>
       </div>
-      <div>{blog.user.name}</div>
+      <div>added by {blog.user.name}</div>
       {deleteButton()}
     </div>
   )
-
-  return (
-    <div style={blogStyle} className='blog'>
-      {blog.title} {blog.author} &nbsp;
-      <button onClick={() => setViewDetails(!viewDetails)}>
-        {viewDetails ? 'hide' : 'view'}
-      </button>
-      {viewDetails && blogDetails()}
-    </div>
-  )
-}
-
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  currentUser: PropTypes.string.isRequired,
 }
 
 export default Blog
