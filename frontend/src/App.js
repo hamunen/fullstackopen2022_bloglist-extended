@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
-import { Routes, Route, useMatch } from 'react-router-dom'
+import { Routes, Route, useMatch, Link } from 'react-router-dom'
 import Blog from './components/Blog'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
@@ -47,32 +47,57 @@ const App = () => {
     </div>
   )
 
-  return currentUser === null ? (
-    loginForm()
-  ) : (
-    <div>
-      <h2>blogs</h2>
-      <Notification />
-      <p>
-        {currentUser.name} is logged in
-        <br />
-        <button onClick={() => dispatch(logoutUser())}>logout</button>
-      </p>
+  const navBarStyle = {
+    background: 'khaki',
+    padding: 5,
+  }
 
-      <Routes>
-        <Route
-          path='/'
-          element={
-            <BlogList blogs={blogs} currentUser={currentUser.username} />
-          }
-        />
-        <Route path='/users' element={<Users users={users} />} />
-        <Route path='/users/:id' element={<User user={navigatedUser} />} />
-        <Route
-          path='/blogs/:id'
-          element={<Blog blog={navigatedBlog} currentUser={currentUser} />}
-        />
-      </Routes>
+  const navBarPadding = {
+    padding: 5,
+  }
+
+  const navBar = () => (
+    <div style={navBarStyle}>
+      <Link style={navBarPadding} to='/'>
+        blogs
+      </Link>
+      <Link style={navBarPadding} to='/users'>
+        users
+      </Link>
+      {currentUser != null && (
+        <span>
+          {currentUser.name} logged in{' '}
+          <button onClick={() => dispatch(logoutUser())}>logout</button>
+        </span>
+      )}
+    </div>
+  )
+
+  return (
+    <div>
+      {navBar()}
+      {currentUser === null ? (
+        loginForm()
+      ) : (
+        <div>
+          <h2>blog app</h2>
+          <Notification />
+          <Routes>
+            <Route
+              path='/'
+              element={
+                <BlogList blogs={blogs} currentUser={currentUser.username} />
+              }
+            />
+            <Route path='/users' element={<Users users={users} />} />
+            <Route path='/users/:id' element={<User user={navigatedUser} />} />
+            <Route
+              path='/blogs/:id'
+              element={<Blog blog={navigatedBlog} currentUser={currentUser} />}
+            />
+          </Routes>
+        </div>
+      )}
     </div>
   )
 }
