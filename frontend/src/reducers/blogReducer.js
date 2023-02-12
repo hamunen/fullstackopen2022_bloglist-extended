@@ -80,4 +80,15 @@ export const initializeBlogs = () => {
   }
 }
 
+export const commentBlog = (id, comment) => {
+  return async (dispatch) => {
+    try {
+      const commentedBlog = await blogService.comment(id, comment)
+      dispatch(updateBlog(commentedBlog))
+    } catch (error) {
+      dispatch(setNotification(error.response.data.error, true))
+    }
+  }
+}
+
 export default blogSlice.reducer

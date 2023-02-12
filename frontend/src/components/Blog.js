@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { likeBlog, deleteBlog } from '../reducers/blogReducer'
+import { likeBlog, deleteBlog, commentBlog } from '../reducers/blogReducer'
 import { useNavigate } from 'react-router-dom'
 
 const Blog = ({ blog, currentUser }) => {
@@ -32,6 +32,40 @@ const Blog = ({ blog, currentUser }) => {
       )
   }
 
+  const [comment, setComment] = useState('')
+
+  const handleCommentSubmit = (event) => {
+    event.preventDefault()
+    //dispatch(loginUser({ username, password }))
+    dispatch(commentBlog(blog.id, comment))
+    setComment('')
+  }
+
+  const commentForm = () => (
+    <div>
+      <h3>comments</h3>
+      <form onSubmit={handleCommentSubmit}>
+        <input
+          id='comment'
+          type='text'
+          value={comment}
+          name='comment'
+          placeholder='comment...'
+          autoComplete='off'
+          onChange={({ target }) => setComment(target.value)}
+        />
+        <button id='comment-submit' type='submit'>
+          add comment
+        </button>
+      </form>
+      <ul>
+        {blog.comments.map((comment, i) => (
+          <li key={i}>{comment}</li>
+        ))}
+      </ul>
+    </div>
+  )
+
   if (!blog) {
     return null
   }
@@ -55,6 +89,7 @@ const Blog = ({ blog, currentUser }) => {
       </div>
       <div>added by {blog.user.name}</div>
       {deleteButton()}
+      {commentForm()}
     </div>
   )
 }
