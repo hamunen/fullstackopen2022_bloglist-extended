@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import BlogForm from './BlogForm'
 import Togglable from './Togglable'
 import { createBlog } from '../reducers/blogReducer'
-import { Link } from 'react-router-dom'
+import { BlogContainer, BlogLink, SmallText } from '../styles'
 
 const BlogList = ({ currentUser, blogs }) => {
   const dispatch = useDispatch()
@@ -22,24 +22,16 @@ const BlogList = ({ currentUser, blogs }) => {
     </div>
   )
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
-
   return (
     <div>
       {blogForm()}
       <br />
       {blogs.map((blog) => (
-        <div key={blog.id} style={blogStyle} className='blog'>
-          <Link to={`/blogs/${blog.id}`}>
-            {blog.title} - by {blog.author}
-          </Link>
-        </div>
+        <BlogLink key={blog.id} to={`/blogs/${blog.id}`}>
+          <BlogContainer>
+            <b>{blog.title}</b> <SmallText>by {blog.author}</SmallText>
+          </BlogContainer>
+        </BlogLink>
       ))}
     </div>
   )
