@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { likeBlog, deleteBlog, commentBlog } from '../reducers/blogReducer'
 import { useNavigate } from 'react-router-dom'
+import { BlogTitle } from '../styles'
 
 const Blog = ({ blog, currentUser }) => {
   const dispatch = useDispatch()
@@ -72,9 +73,8 @@ const Blog = ({ blog, currentUser }) => {
 
   return (
     <div>
-      <h1>
-        {blog.title} - by {blog.author}
-      </h1>
+      <BlogTitle>{blog.title}</BlogTitle>
+      by {blog.author}
       <div>
         <a href={blog.url}>{blog.url}</a>
       </div>
