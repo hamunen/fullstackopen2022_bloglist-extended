@@ -8,7 +8,16 @@ export const Page = styled.div`
 `
 
 export const NavbarDivider = styled.hr`
-  border: 2px solid brown;
+  border: 2px dotted brown;
+`
+
+export const StyledButton = styled.button`
+  color: black;
+  border: 1px solid;
+  border-radius: 9px;
+  &:hover {
+    background: pink;
+  }
 `
 
 export const Navigation = styled.div`

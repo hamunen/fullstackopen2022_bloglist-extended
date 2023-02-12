@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { BlogTitle, StyledButton } from '../styles'
 
 const BlogForm = ({ createBlog }) => {
   const [newTitle, setNewTitle] = useState('')
@@ -47,9 +48,9 @@ const BlogForm = ({ createBlog }) => {
           />
         </div>
 
-        <button id='create-blog-button' type='submit'>
+        <StyledButton id='create-blog-button' type='submit'>
           create
-        </button>
+        </StyledButton>
       </form>
     </div>
   )

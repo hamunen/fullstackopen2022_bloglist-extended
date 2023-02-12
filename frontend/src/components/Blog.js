@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { likeBlog, deleteBlog, commentBlog } from '../reducers/blogReducer'
 import { useNavigate } from 'react-router-dom'
-import { BlogTitle } from '../styles'
+import { BlogTitle, StyledButton } from '../styles'
 
 const Blog = ({ blog, currentUser }) => {
   const dispatch = useDispatch()
@@ -23,12 +23,12 @@ const Blog = ({ blog, currentUser }) => {
     if (blog.user.username === currentUser.username)
       return (
         <div>
-          <button
+          <StyledButton
             data-test-id='removeBtn'
             onClick={() => handleDelete(blog.id)}
           >
             remove
-          </button>{' '}
+          </StyledButton>{' '}
         </div>
       )
   }
@@ -55,9 +55,9 @@ const Blog = ({ blog, currentUser }) => {
           autoComplete='off'
           onChange={({ target }) => setComment(target.value)}
         />
-        <button id='comment-submit' type='submit'>
+        <StyledButton id='comment-submit' type='submit'>
           add comment
-        </button>
+        </StyledButton>
       </form>
       <ul>
         {blog.comments.map((comment, i) => (
@@ -80,12 +80,12 @@ const Blog = ({ blog, currentUser }) => {
       </div>
       <div>
         {blog.likes} likes{' '}
-        <button
+        <StyledButton
           data-test-id='likeBtn'
           onClick={() => dispatch(likeBlog(blog.id))}
         >
           like
-        </button>
+        </StyledButton>
       </div>
       <div>added by {blog.user.name}</div>
       {deleteButton()}

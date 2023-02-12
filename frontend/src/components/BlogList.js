@@ -5,7 +5,7 @@ import Togglable from './Togglable'
 import { createBlog } from '../reducers/blogReducer'
 import { BlogContainer, BlogLink, SmallText } from '../styles'
 
-const BlogList = ({ currentUser, blogs }) => {
+const BlogList = ({ blogs }) => {
   const dispatch = useDispatch()
 
   const addBlog = async (blog) => {
